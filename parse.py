@@ -5,6 +5,9 @@ note_names = [ None, "a,,,", "ais,,,", "b,,,", "c,,", "cis,,", "d,,", "dis,,", "
 def getnote( num ):
 	return note_names[ int( num ) ]
 
+def getnum(note):
+	return note_names.index(note)
+
 file = open( "output_numbers.txt", "r" )
 lines = file.read().split( "\n" )[:-1]
 file.close()
@@ -71,9 +74,9 @@ parts2 = []
 parts2.append( parts[0] )
 parts2.append( parts[1] )
 parts2.append( parts[2] )
-#addPassingTones( parts[2] ) )
 parts2.append( parts[3] )
-#addPassingTones( parts[3] ) )
+# parts2.append( addPassingTones( parts[2] ) )
+# parts2.append( addPassingTones( parts[3] ) )
 
 parts = addEnding( parts2 )
 for part in parts:
