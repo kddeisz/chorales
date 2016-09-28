@@ -1,6 +1,8 @@
 # Chorales
 
-This was my senior year techlab project in high school that wrote chorales. It uses a [constraint-satisfaction problem](https://en.wikipedia.org/wiki/Constraint_satisfaction_problem) solver to follow basic part writing rules (no parallel fifths, no parallel octaves, no large jumps for voices other than bass, etc.).
+This was my senior year techlab project in high school that wrote chorales. It uses a [constraint-satisfaction problem](https://en.wikipedia.org/wiki/Constraint_satisfaction_problem) solver to follow basic part writing rules (no parallel fifths, no parallel octaves, no large jumps for voices other than bass, etc.). It also follows some basic rules about which chords can lead to which other chords, as described here:
+
+![Major chord progressions](img/chordprogmaj.png)
 
 ## Getting started
 
