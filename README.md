@@ -4,7 +4,7 @@ This was my senior year techlab project in high school that wrote chorales. It u
 
 ## Getting started
 
-Install the [`lilypond`](http://lilypond.org/) application (which it uses for engraving). If you put the application in a non-standard path (i.e., not `/Applications`) you'll need to update the `lilypond` script in this repo.
+Install the [`lilypond`](http://lilypond.org/) application (which it uses for engraving). If you put the application in a non-standard path (i.e., not `/Applications`) you'll need to update the `bin/lilypond` script in this repo.
 
 Ensure you have [`ghostscript`](http://www.ghostscript.com/) installed. On mac you can install with [`homebrew`](http://brew.sh/index.html) using:
 
