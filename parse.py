@@ -116,6 +116,6 @@ def printout( parts ):
 	fh.write( "\t\\layout{ }\n}\n" )
 
 	fh.close()
-	os.system( "./lilypond output.ly" )
+	os.system( "bin/lilypond output.ly" )
 
 printout( parts )
