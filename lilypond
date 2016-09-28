@@ -1,0 +1,5 @@
+#!/bin/bash
+
+[ $(uname) = 'Darwin' ] &&
+  exec /Applications/LilyPond.app/Contents/Resources/bin/lilypond "$@" ||
+  echo "This assumes you're running on a mac, to run on other systems please update this script to point to the lilypond binary."

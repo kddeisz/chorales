@@ -1,0 +1,5 @@
+*.pyc
+output.ly
+output.midi
+output.pdf
+output_numbers.txt

@@ -1,5 +1,4 @@
-#!usr/bin/python
-# Kevin Deisz
+#!usr/bin/env python
 
 import random, os, csp_solver_4
 num_chords = 128
