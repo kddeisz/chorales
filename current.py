@@ -1,6 +1,6 @@
 #!usr/bin/env python
 
-import random, os, csp_solver_4
+import random, os, csp
 num_chords = 128
 
 chords = [ 1 ] 
@@ -113,7 +113,7 @@ def write( current, next, index ):
 			constraints[ node ].append( [ neighbor, constraint_func ] )
 
 	assignments = {}
-	if csp_solver_4.backtracking( domains, assignments, constraints ):
+	if csp.backtracking( domains, assignments, constraints ):
 		retval = []	
 		for x in xrange( len( assignments ) ):
 			retval.append( assignments[x] )

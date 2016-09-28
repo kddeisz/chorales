@@ -57,7 +57,7 @@ def backtracking( domains, assignments, constraints ):
 				return True
 			else:
 				del assignments[ next_var ]
-	print "Backtracking..."
+	# print "Backtracking..."
 	return False
 
 def find_min( domains, assignments, constraints ):
