@@ -1,96 +1,101 @@
-def backtracking( domains, assignments, constraints ):
-	if len( assignments ) == len( domains ):
-		return True
+"""Satisfies a set of constraints through a recursive backtracking algorithm."""
 
-	next_var = find_min( domains, assignments, constraints )
-	unique_list = []
-	def sort_func( a, b ): # --- LEAST CONSTRAINING VALUE FUNCTION --- #
-		counter_a = 0
-		counter_b = 0
-		for constraint_pair in constraints[ next_var ]:
-			nbr, constraint = constraint_pair
-			if nbr in assignments:
-				continue
-			if nbr in unique_list:
-				continue
-			else:
-				unique_list.append( nbr )
+def backtracking(domains, assignments, constraints):
+    """Backtracks until it finds assignments for every value within each domain following the given
+    constraints"""
+    if len(assignments) == len(domains):
+        return True
 
-			for possible in domains[ nbr ]:
-				if not constraint( next_var, a, nbr, possible  ):
-					counter_a += 1
+    next_var = find_min(domains, assignments, constraints)
+    unique_list = []
 
-			for possible in domains[ nbr ]:
-				if not constraint( next_var, b, nbr, possible ):
-					counter_b += 1
-		return counter_a - counter_b
-	domains[ next_var ].sort( sort_func )
+    def least_constraining_value(alpha, beta):
+        """Sorts by the value that will allow the highest number of other values to remain in the
+        domains of the neighbor nodes"""
+        counter_alpha = 0
+        counter_beta = 0
+        for constraint_pair in constraints[next_var]:
+            nbr, constraint = constraint_pair
+            if nbr in assignments:
+                continue
+            if nbr in unique_list:
+                continue
+            else:
+                unique_list.append(nbr)
 
-#	print domains[ next_var ]
-	for possible_val in domains[ next_var ]:
-		for constraint_pair in constraints[ next_var ]:
-			nbr, constraint = constraint_pair
-			
-			if nbr not in assignments:
-				continue
-			
-			if not constraint( next_var, possible_val, nbr, assignments[ nbr ] ):
-				break
-		else:
-#			print "Assigning [%s]: %s" % (next_var, possible_val)
-			assignments[ next_var ] = possible_val
-			
-			new_domains = {}
-			for i in domains.keys():
-				new_domains[i] = domains[i][:]
+            for possible in domains[nbr]:
+                if not constraint(next_var, alpha, nbr, possible):
+                    counter_alpha += 1
 
-			for constraint_pair in constraints[ next_var ]:
-				counter = 0
-				nbr, constraint = constraint_pair	
+            for possible in domains[nbr]:
+                if not constraint(next_var, beta, nbr, possible):
+                    counter_beta += 1
+        return counter_alpha - counter_beta
+    domains[next_var].sort(least_constraining_value)
 
-				for possible in domains[ nbr ]:
-					if possible in new_domains[ nbr ]:
-						if not constraint( next_var, possible_val, nbr, possible ):
-#							print "Removing %s from %s" % ( possible, nbr )
-							new_domains[ nbr ].remove( possible )
-			if backtracking( new_domains, assignments, constraints ):
-				return True
-			else:
-				del assignments[ next_var ]
-	# print "Backtracking..."
-	return False
+    for possible_val in domains[next_var]:
+        for constraint_pair in constraints[next_var]:
+            nbr, constraint = constraint_pair
 
-def find_min( domains, assignments, constraints ):
-	def sort_func( a, b ): # --- SORT BY AMOUNT OF POSSIBLE VALUES --- #
-		return len( domains[ a ] ) - len( domains[ b ] )
-	
-	def sort_func2( a, b ): # --- SORT BY AMOUNT OF UNASSIGNED NEIGHBORS --- #
-		count_a = 0
-		count_b = 0
+            if nbr not in assignments:
+                continue
 
-		for constraint_pair in constraints[ a ]:
-			nbr, constraint = constraint_pair
-			if nbr in assignments:
-				continue
-			count_a += 1
-		for constraint_pair in constraints[ b ]:
-			nbr, constraint = constraint_pair
-			if nbr in assignments:
-				continue
-			count_b += 1
+            if not constraint(next_var, possible_val, nbr, assignments[nbr]):
+                break
+        else:
+            assignments[next_var] = possible_val
 
-		return count_a - count_b
+            new_domains = {}
+            for i in domains.keys():
+                new_domains[i] = domains[i][:]
 
-	array = [ node for node in domains if node not in assignments ]
-	array.sort( sort_func )
-	
-	count = array[ 0 ]
-	minimums = []
-	for i in array:
-		if i == count:
-			minimums.append( i )
-	if len( minimums ) == 1:
-		return minimums[ 0 ]
+            for constraint_pair in constraints[next_var]:
+                nbr, constraint = constraint_pair
 
-	minimum.sort( sort_func2 )
-	return minimum[ 0 ]
+                for possible in domains[nbr]:
+                    if possible in new_domains[nbr]:
+                        if not constraint(next_var, possible_val, nbr, possible):
+                            new_domains[nbr].remove(possible)
+            if backtracking(new_domains, assignments, constraints):
+                return True
+            else:
+                del assignments[next_var]
+    return False
+
+def find_min(domains, assignments, constraints):
+    """Finds the next node to which to attempt to assign a value"""
+    def domain_size(alpha, beta):
+        """A sort function based on the number of possible remaining values"""
+        return len(domains[alpha]) - len(domains[beta])
+
+    def unassigned_neighbors(alpha, beta):
+        """A sort function based on the number of neighbor nodes without a value"""
+        counter_alpha = 0
+        counter_beta = 0
+
+        for constraint_pair in constraints[alpha]:
+            nbr, _ = constraint_pair
+            if nbr in assignments:
+                continue
+            counter_alpha += 1
+        for constraint_pair in constraints[beta]:
+            nbr, _ = constraint_pair
+            if nbr in assignments:
+                continue
+            counter_beta += 1
+
+        return counter_alpha - counter_beta
+
+    array = [node for node in domains if node not in assignments]
+    array.sort(domain_size)
+
+    count = array[0]
+    minimums = []
+    for idx in array:
+        if idx == count:
+            minimums.append(idx)
+    if len(minimums) == 1:
+        return minimums[0]
+
+    minimums.sort(unassigned_neighbors)
+    return minimums[0]
