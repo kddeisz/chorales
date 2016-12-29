@@ -3,22 +3,22 @@
 import random, os, csp
 num_chords = 128
 
-chords = [ 1 ] 
+chords = [1] 
 current_chord = []
 
-note_names = [ None, "a,,,", "ais,,,", "b,,,", "c,,", "cis,,", "d,,", "dis,,", "e,,", "f,,", "fis,,", "g,,", "gis,,", "a,,", "ais,,", "b,,", "c,", "cis,", "d,", "dis,", "e,", "f,", "fis,", "g,", "gis,", "a,", "ais,", "b,", "c", "cis", "d", "dis", "e", "f", "fis", "g", "gis", "a", "ais", "b", "c'", "cis'", "d'", "dis'", "e'", "f'", "fis'", "g'", "gis'", "a'", "ais'", "b'", "c''", "cis''", "d''", "dis''", "e''", "f''", "fis''", "g''", "gis''", "a''", "ais''", "b''", "c''',", "cis'''", "d'''", "dis'''", "e'''", "f'''", "fis'''", "g'''", "gis'''", "a'''", "ais'''", "b'''", "c''''", "cis''''", "d''''", "dis''''", "e''''", "f''''", "fis''''", "g''''", "gis''''", "a''''", "ais''''", "b''''", "c'''''" ]
+note_names = [None, "a,,,", "ais,,,", "b,,,", "c,,", "cis,,", "d,,", "dis,,", "e,,", "f,,", "fis,,", "g,,", "gis,,", "a,,", "ais,,", "b,,", "c,", "cis,", "d,", "dis,", "e,", "f,", "fis,", "g,", "gis,", "a,", "ais,", "b,", "c", "cis", "d", "dis", "e", "f", "fis", "g", "gis", "a", "ais", "b", "c'", "cis'", "d'", "dis'", "e'", "f'", "fis'", "g'", "gis'", "a'", "ais'", "b'", "c''", "cis''", "d''", "dis''", "e''", "f''", "fis''", "g''", "gis''", "a''", "ais''", "b''", "c''',", "cis'''", "d'''", "dis'''", "e'''", "f'''", "fis'''", "g'''", "gis'''", "a'''", "ais'''", "b'''", "c''''", "cis''''", "d''''", "dis''''", "e''''", "f''''", "fis''''", "g''''", "gis''''", "a''''", "ais''''", "b''''", "c'''''"]
 
-def constraint_func( A, a, B, b ):
+def constraint_func(A, a, B, b):
 	global current_chord
-	if (a<b and A>B) or (a>b and A<B) or a==b:
+	if (a < b and A > B) or (a > b and A < B) or a == b: # no voice crossing
 		return False
-	if abs(A-B)==1 and ( abs(a-b)>12 ):
+	if abs(A - B) == 1 and (abs(a - b) > 12): # no large jumps
 		return False
-	if A!=0 and B!=0 and ( abs(current_chord[A]-current_chord[B])==24 and abs(a-b)==24 ):
+	if A != 0 and B != 0 and (abs(current_chord[A] - current_chord[B]) == 24 and abs(a - b) == 24): # no parallel octaves (2 octaves)
 		return False
-	if A!=0 and B!=0 and ( abs(current_chord[A]-current_chord[B])==12 and abs(a-b)==12 ):
+	if A != 0 and B != 0 and (abs(current_chord[A] - current_chord[B]) == 12 and abs(a - b) == 12): # no parallel octaves (1 octave)
 		return False
-	if ( abs(current_chord[A]-current_chord[B])==7 and abs(a-b)==7 ):
+	if (abs(current_chord[A] - current_chord[B]) == 7 and abs(a - b) == 7): # no parallel fifths
 		return False
 	return True
 
