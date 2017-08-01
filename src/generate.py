@@ -3,6 +3,7 @@
 import random
 import os
 import csp
+from engrave import engrave
 
 num_chords = 128
 chords = [1] 
@@ -72,12 +73,6 @@ def readin( filename ):
             item2.append( int( j ) )
         progressions[ item2[0] ] = item2[1:]
     return progressions
-prog_back = readin( "prog_backward.csv" )
-prog_forw = readin( "prog_forward.csv" )
-
-def step( progressions, curchord ):
-    neighbors = progressions[ curchord ]
-    return neighbors[ random.randint( 0, len( neighbors )-1 ) ]
 
 def write( current, next, index ):
     global current_chord, chords
@@ -132,25 +127,19 @@ def write( current, next, index ):
             retval.append( assignments[x] )
         return retval
     else:
-#        next = step( prog_forw, chords[index] )
         return write( [28,35,40,44], next, index )
 
-for x in xrange( num_chords-1 ):
-    chords.append( step( prog_back, chords[x] ) )
-chords.append( 1 )
+prog_back = readin("prog_backward.csv")
+
+for x in xrange(num_chords - 1):
+    neighbors = prog_back[chords[x]]
+    chords.append(neighbors[random.randint(0, len(neighbors) - 1)])
+
+chords.append(1)
 chords.reverse()
-#print chords
 
-parts = [ [28,35,40,44] ]
-for x in xrange( len( chords )-1 ):
-    parts.append( write( parts[x], chords[x+1], x ) )
-#print parts
+parts = [[28, 35, 40, 44]]
+for part in xrange(len(chords) - 1):
+    parts.append(write(parts[part], chords[part + 1], part))
 
-fh = open( "output_numbers.txt", "w" )
-for x in xrange( len( parts ) ):
-    for y in xrange( len( parts[x] )-1 ):
-        fh.write( "%s," % ( parts[x][y] ) )
-    fh.write( "%s\n" % ( parts[x][ len( parts[x] )-1 ] ) )
-fh.close()
-
-os.system( "python parse.py" )
+engrave(parts)

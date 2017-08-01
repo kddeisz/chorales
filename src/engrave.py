@@ -20,21 +20,6 @@ def getnote(num):
 def getnum(note):
     return note_names.index(note)
 
-file = open("output_numbers.txt", "r")
-lines = file.read().split("\n")[:-1]
-file.close()
-
-parts = []
-for x in xrange(len(lines)):
-    parts.append(lines[x].split(","))
-
-parts2 = []
-for x in xrange(len(parts)):
-    line = []
-    for y in xrange(len(parts[x])):
-        line.append(getnote(parts[x][y]))
-    parts2.append(line)
-
 def separate(parts):
     retval = []
 
@@ -80,20 +65,6 @@ def addEnding(parts):
         parts[x][len(parts[x]) - 1] = parts[x][len(parts[x]) - 1] + "1"
     return parts
 
-parts = separate(parts2)
-parts2 = []
-parts2.append(parts[0])
-parts2.append(parts[1])
-parts2.append(parts[2])
-parts2.append(parts[3])
-# parts2.append(addPassingTones(parts[2]))
-# parts2.append(addPassingTones(parts[3]))
-
-parts = addEnding(parts2)
-for part in parts:
-    if part[0][len(part[0]) - 1] != "8" and part[0][len(part[0]) - 1]:
-        part[0] = part[0] + "4"
-
 def printout(parts):
     fh = open("output.ly", "w")
     fh.write("\\version \"2.12.1\"\n\n")
@@ -132,4 +103,26 @@ def printout(parts):
     fh.close()
     os.system("bin/lilypond output.ly")
 
-printout(parts)
+def engrave(parts):
+    parts2 = []
+    for x in xrange(len(parts)):
+        line = []
+        for y in xrange(len(parts[x])):
+            line.append(getnote(parts[x][y]))
+        parts2.append(line)
+
+    parts = separate(parts2)
+    parts2 = []
+    parts2.append(parts[0])
+    parts2.append(parts[1])
+    parts2.append(parts[2])
+    parts2.append(parts[3])
+    # parts2.append(addPassingTones(parts[2]))
+    # parts2.append(addPassingTones(parts[3]))
+
+    parts = addEnding(parts2)
+    for part in parts:
+        if part[0][len(part[0]) - 1] != "8" and part[0][len(part[0]) - 1]:
+            part[0] = part[0] + "4"
+
+    printout(parts)

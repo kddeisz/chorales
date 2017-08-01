@@ -14,7 +14,7 @@ Ensure you have [`ghostscript`](http://www.ghostscript.com/) installed. On mac y
 
 Once the dependencies are installed, you can run the program with:
 
-    $ python current.py
+    $ python src/generate.py
 
 This will generate a PDF called `output.pdf`, where you can see what it wrote:
 
