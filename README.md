@@ -19,3 +19,11 @@ Once the dependencies are installed, you can run the program with:
 This will generate a PDF called `output.pdf`, where you can see what it wrote:
 
     $ open output.pdf
+
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/kddeisz/chorales.
+
+## License
+
+The code is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
